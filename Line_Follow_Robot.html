@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+     <title> Line Follow Robot </title>
+</head>
+<body>
+     <body style="background-color:powderblue;">
+	 
+     
+     <style>
+	 h1 {text-align: center;}
+     h1 {color: blue;}
+	 h2 {color: red;}
+	 </style>
+     
+     <h1 style="font-size:50px;">Line Follow Robot</h1>
+     
+     
+	 <h2><u>1.តើRobotជាអ្វី?</u></h2> 
+        <p> Robotគឺជាគ្រឿងឧបករណ៍អេឡិចត្រូនិចមាននាទីជំនួសកម្លាំងមនុស្សឬធ្វើសកម្មភាពផ្សេងៗទៀតតាមការកំណត់ដោយកំព្យូទ័រ។</p>
+     <h2><u>2.អត្ថប្រយៅជន៍នៃRobotមានដូចជា៖</u></h2>           
+      <ol>
+          <li>ក្នុងវិស័យឧស្សាហកម្ម</li>
+
+          <li>ក្នុងវិស័យកសិកម្ម</li>
+
+          <li>ក្នុងវិស័យសុខាភិបាល</li>
+		  
+		  <li>ក្នុងវិស័យទេសចរណ៍</li>
+
+   	  </ol>
+   
+     <h2><u>3.តើLine Follow Robotជាអ្វី</u>
+	 
+	 </h2>
+	 <p>Line Follow Robotគឺជារ៉ូបូតដែលរត់ទៅតាមបន្ទាត់ខ្មៅដោយស្វ័យប្រវត្តិពីព្រោះដោយសារវាមានបំពាក់នូវ​Line Tracking Sensor
+	 </p>
+	 <h2> អត្ថប្រយោជន៏របស់Line Follow Robot មានដូចជា៖
+	 </h2>
+	 <p>អត្ថប្រយោជន៏របស់Line Follow Robot គឺសម្រាប់ដឹកជញ្ជួនឥវ៉ាន់ធំៗធ្ងន់ៗដែលមនុស្សទូទៅយើងមិនអាចលើកបាននិងផ្សេងៗជាច្រើនទៀត ។
+     </p>
+	 <h2> <u>4.សម្ភារៈដែលត្រូវប្រើប្រាស់៖</u>
+	 </h2>
+	 <ol>
+	    <li>Arduino Mega</li>
+		<li>Driver L298</li>
+		<li>Line Tracking Sensor×2</li>
+		<li>Motor×2</li>
+		<li>Battery 9v & Battery 12v</li>
+		<li>Wheel×2</li>
+		<li>Wire</li>
+		<li>Body Kit Robot</li>
+		<li>Bolt</li>
+	 </ol>
+	 <h2><u>5.តូនាទីនៃសម្ភារៈនីមួយៗ៖</u>
+	 </h2>
+	 <ul>
+	     <li> Arduino Mega ជា​ Controller</li>
+		 <li>Driver L298 ជាអ្នកបញ្ជា Motor អោយរ៉ូបូតទៅមុខបត់ឆ្វេងឬបត់ស្តាំ</li>
+		 <li>Line Tracking Sensor ជាSensorចាប់យកពណ៌ខ្មៅនិងសហើយបោះព័ត៌មានអោយArduino</li>
+		 <li>ថ្មពិល9vផ្តល់ថាមពលអោយArduino</li>
+		 <li>ថ្មពិល12vផ្តល់ថាមពលអោយ Driver L298</li>
+		 <li>Motorជាអ្នកបង្វិលកង់ឳ្យវិល</li>
+		 <li>ខ្សែរភ្លើងមាននាទីតផ្ជាប់ពីឧបករណ៍មួយទៅឧបករណ៍មួយទៀត</li>
+	  </ul>
+	  <h2><u>6.ការតសៀគ្វី</u></h2>
+	  <img src="D:\HTML\Picture1.png">
+	  <h2><u>ការបញ្ជូលកូដ</u></h2>
+	  <b>// Moter Left connections
+<br>int enA = 13;
+<br>int in1 = 12;
+<br>int in2 = 11;
+<br>// Moter Right connections
+<br>int enB = 8;
+<br>int in3 = 10;
+<br>int in4 = 9;
+<br>// Line Tracking Sensor Left connections
+<br>int LineL = A1;
+<br>int L;
+<br>// Line Tracking Sensor Right connections
+<br>int LineR = A0;
+<br>int R;</b>
+
+<b><br><br>void setup() {
+<br>// Set all the motors control pins to outputs
+ <br>Serial.begin(115200);
+<br> pinMode(enA,OUTPUT);
+<br> pinMode(in1,OUTPUT);
+<br> pinMode(in2,OUTPUT);
+ <br>pinMode(enB,OUTPUT);
+<br> pinMode(in3,OUTPUT);
+<br> pinMode(in4,OUTPUT);// Set all the line tracking sensors pins to inputs
+ <br>pinMode(LineL, INPUT);
+ <br>pinMode(LineR, INPUT);
+<br>// Turn off motors - Initial state
+ <br>stop();
+}</b>
+
+<b><br><br>void loop() {
+<br>// Read data from Line Tracking Sensor Left
+<br> L = analogRead(LineL);
+<br>// Read data from Line Tracking Sensor Right
+ <br>R = analogRead(LineR);
+<br>// Show data on screen
+<br> Serial.print("Line Sensor Left: ");
+ <br>Serial.println(L);
+ <br>Serial.print("Line Sensor Right: ");
+<br> Serial.println(R);
+<br>// Condition to control the motors
+ <br>if((L <= 150 && R <=150) || (L >= 400 && R >=400 )){
+ <br>moveForward();
+<br> } else if(L >=400 && R <=150){
+ <br>turnRight();
+<br> } else if(L <=150 && R >=400){
+<br> turnLeft();
+<br> } else{
+ <br>stop();
+ <br>}
+<br> //delay(5);
+}</b>
+
+<b><br><br>// Move motor to forward
+<br>void moveForward(){
+<br> analogWrite(enA, 120);//R
+ <br>analogWrite(enB, 90);//L
+ <br>digitalWrite(in1, LOW);// in1 1 in2 0 forward R
+<br> digitalWrite(in2, HIGH);
+<br> digitalWrite(in3, LOW);// in3 1 in4 0 forward L
+ <br>digitalWrite(in4, HIGH);
+}</b>
+/<b><br><br>/ Stop the motor
+<br>void stop(){
+ <br>digitalWrite(in1, LOW);// in1 1 in2 0 forward R
+ <br>digitalWrite(in2, LOW);
+ <br>digitalWrite(in3, LOW);// in3 1 in4 0 forward L
+ <br>digitalWrite(in4, LOW);
+}</b>
+<b><br><br>// Move motor to turn left
+<br>void turnLeft(){
+ <br>analogWrite(enA, 255);//R
+<br> analogWrite(enB, 120);//L
+ <br>digitalWrite(in1, LOW);// in1 1 in2 0 forward R
+ <br>digitalWrite(in2, HIGH);
+ <br>digitalWrite(in3, HIGH);// in3 1 in4 0 forward L
+ <br>digitalWrite(in4, LOW);
+}</b>
+<b><br><br>// Move motor to turn right
+<br>void turnRight(){
+<br> analogWrite(enA, 145);//R
+<br> analogWrite(enB, 255);//L
+<br> digitalWrite(in1, HIGH);// in1 1 in2 0 forward R
+<br> digitalWrite(in2, LOW);
+<br> digitalWrite(in3, LOW);// in3 1 in4 0 forward L
+<br> digitalWrite(in4, HIGH);
+}
+</b>
+<h2>7.<u>លទ្ធផលសម្រេច</u>
+</h2>
+<img src="D:\Screenshot 2023-12-18 125859.png">
+<p>នៅពេលចាប់បានពណ៌ខ្មៅទាំងពីឬពណ៌សទាំងពីRobotនិងទៅមុខ</p>
+
+<img src="D:\Picture3.png">
+<p>នៅពេលsensorខាងឆ្វេងចាប់បានពណ៌ខ្មៅហើយsensorខាងស្តាំចាប់បានពណ៌សRobotនិងបត់ឆ្វេង</p>
+
+<img src="D:\Picture4.png">
+<p>នៅពេលsensorខាងស្តាំចាប់បានពណ៌ខ្មៅហើយsensorខាងឆ្វេងចាប់បានពណ៌សRobotនិងបត់ស្តាំ</p>
+
+
+
+
+
+
+		
+
+</body>
+</html>
